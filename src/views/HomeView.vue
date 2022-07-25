@@ -1,18 +1,16 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div>asdfasdfas</div>
+    <img v-webp alt="Vue logo" src="../assets/lb.png" />
+    <div v-webpg class="lb"></div>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
-export default {
-  name: "HomeView",
-  components: {
-    HelloWorld,
-  },
-};
-</script>
+<style lang="less" scoped>
+.lb {
+  .webpbg('@/assets/lb.png');
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+}
+</style>

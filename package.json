@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "vant": "^3.5.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
@@ -28,7 +29,10 @@
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
     "lint-staged": "^11.1.2",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "style-resources-loader": "^1.5.0",
+    "vue-cli-plugin-style-resources-loader": "^0.1.5",
+    "webp-converter": "^2.3.3"
   },
   "eslintConfig": {
     "root": true,
