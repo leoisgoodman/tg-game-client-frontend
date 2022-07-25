@@ -1,5 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 const path = require('path');
+
+const version = process.env.VUE_APP_VERSION;
 module.exports = defineConfig({
   transpileDependencies: true,
   pluginOptions: {
@@ -15,7 +17,7 @@ module.exports = defineConfig({
       .test(/\.(png|jpe?g|gif|webp|avif)(\?.*)?$/)
       .set('type', 'asset')
       .set('generator', {
-        filename: `1.0.2/[name][ext]`,
+        filename: `${version}/[name][ext]`,
       })
       .end();
   },
