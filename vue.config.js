@@ -1,5 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 const path = require('path');
+const { VantResolver } = require('unplugin-vue-components/resolvers');
+const ComponentsPlugin = require('unplugin-vue-components/webpack');
 
 const version = process.env.VUE_APP_VERSION;
 module.exports = defineConfig({
@@ -9,6 +11,13 @@ module.exports = defineConfig({
       preProcessor: 'less',
       patterns: [path.resolve(__dirname, './src/style/global.less')],
     },
+  },
+  configureWebpack: {
+    plugins: [
+      ComponentsPlugin({
+        resolvers: [VantResolver()],
+      }),
+    ],
   },
   // 图片不用hash放入版本文件夹
   chainWebpack: (config) => {
