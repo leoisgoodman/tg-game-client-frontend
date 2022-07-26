@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import * as directives from '@/directives';
-import { Toast, Button, Tabbar, TabbarItem } from 'vant';
+import { Toast, Button, Tabbar, TabbarItem, Field, CellGroup, Grid, GridItem } from 'vant';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -16,6 +16,6 @@ Object.keys(directives).forEach((key) => {
 
 app.config.globalProperties.$toast = Toast;
 
-app.use(Button).use(Tabbar).use(TabbarItem);
+app.use(Button).use(Tabbar).use(TabbarItem).use(Field).use(CellGroup).use(Grid).use(GridItem);
 
 app.use(store).use(router).mount('#app');
