@@ -1,28 +1,46 @@
 <template>
-  <div>
-    <router-view />
-    <van-button type="primary">主要按钮</van-button>
-    <van-button type="success">成功按钮</van-button>
-    <van-button type="default">默认按钮</van-button>
-    <van-button type="warning">警告按钮</van-button>
-    <van-button type="danger">危险按钮</van-button>
+  <div class="main">
+    <div class="content">
+      <router-view />
+      <van-tabbar route active-color="#ee0a24" inactive-color="#000">
+        <van-tabbar-item to="/rule" icon="bars">规则</van-tabbar-item>
+        <van-tabbar-item to="/" icon="fire">投注</van-tabbar-item>
+        <van-tabbar-item to="/main" icon="setting">庄家</van-tabbar-item>
+        <van-tabbar-item to="/recharge" icon="gold-coin">充值提现</van-tabbar-item>
+      </van-tabbar>
+    </div>
   </div>
 </template>
 <script>
-import { getCurrentInstance } from 'vue';
-// import { Toast } from 'vant';
-// import 'vant/es/toast/style';
-
-import { onMounted } from 'vue';
+import { ref } from 'vue';
 
 export default {
   setup() {
-    const { proxy } = getCurrentInstance();
-    onMounted(() => {
-      proxy.$toast('提示内容');
-    });
+    const active = ref(0);
+    return { active };
   },
 };
 </script>
 
-<style lang="less"></style>
+<style lang="less" scoped>
+.main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+
+  .content {
+    width: 100%;
+    max-width: 750px;
+    overflow: hidden;
+    /deep/ .van-tabbar--fixed {
+      width: 100%;
+      max-width: 750px;
+      left: auto;
+      // min-width: 750px;
+    }
+  }
+}
+</style>
