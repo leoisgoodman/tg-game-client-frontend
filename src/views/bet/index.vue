@@ -1,40 +1,67 @@
 <template>
   <div class="bet">
-    投注
-    <van-cell-group inset>
-      <van-field v-model="value" label="文本" placeholder="请输入用户名" />
-    </van-cell-group>
-    <van-cell-group inset>
-      <!-- 输入任意文本 -->
-      <van-field v-model="text" label="文本" />
-      <!-- 输入手机号，调起手机号键盘 -->
-      <van-field v-model="tel" type="tel" label="手机号" />
-      <!-- 允许输入正整数，调起纯数字键盘 -->
-      <van-field v-model="digit" type="digit" label="整数" />
-      <!-- 允许输入数字，调起带符号的纯数字键盘 -->
-      <van-field v-model="number" type="number" label="数字" />
-      <!-- 输入密码 -->
-      <van-field v-model="password" type="password" label="密码" />
-    </van-cell-group>
-    <div></div>
-    <table class="table" border="1">
-      <tr class="th">
-        <th></th>
-        <th v-for="ver in defaultList" :key="ver">
-          {{ ver }}
-        </th>
-        <th>大小</th>
-        <th>单双</th>
-      </tr>
-      <tr v-for="item in list" :key="item.id">
-        <th>{{ item.date }}</th>
-        <td :class="{ active: item.num === ver }" v-for="ver in defaultList" :key="ver">
-          <span v-if="item.num === ver"> {{ ver }} </span>
-        </td>
-        <td :class="{ red: item.num > 4 }">{{ item.num > 4 ? '大' : '小' }}</td>
-        <td :class="{ red: item.num % 2 }">{{ item.num % 2 ? '单' : '双' }}</td>
-      </tr>
-    </table>
+    <div class="bet_head">彩票已关停 <span class="tag ml20">试玩</span></div>
+    <div class="bet_form">
+      <div class="bet_input">
+        <span> {{ butState ? '选中号码各投注：' : '投注金额：' }} </span>
+        <input type="text" />
+        <span>USDT</span>
+      </div>
+      <div class="bet_but" v-show="!butState">
+        <van-button color="#1ae" size="small">大</van-button>
+        <van-button color="#1ae" size="small">小</van-button>
+        <van-button color="#1ae" size="small">单</van-button>
+        <van-button color="#1ae" size="small">双</van-button>
+        <van-button color="#3369E8" @click="setButState" size="small">号码</van-button>
+      </div>
+      <div class="bet_but_group" v-show="butState">
+        <div class="bet_but_num">
+          <van-button type="default">0</van-button>
+          <van-button type="default">1</van-button>
+          <van-button type="default">2</van-button>
+          <van-button type="default">3</van-button>
+          <van-button type="default">4</van-button>
+        </div>
+        <div class="bet_but_num">
+          <van-button type="default">5</van-button>
+          <van-button type="default">6</van-button>
+          <van-button type="default">7</van-button>
+          <van-button type="default">8</van-button>
+          <van-button type="default">9</van-button>
+        </div>
+        <div class="bet_but_num">
+          <van-button color="#1ae">确定</van-button>
+          <van-button type="default" @click="setButState">取消</van-button>
+        </div>
+      </div>
+    </div>
+
+    <van-tabs v-model:active="active" class="bet_tabs">
+      <van-tab title="走势图">
+        <div class="bet_table_con">
+          <table class="bet_table" border="1">
+            <tr class="th">
+              <th></th>
+              <th v-for="ver in defaultList" :key="ver">
+                {{ ver }}
+              </th>
+              <th>大小</th>
+              <th>单双</th>
+            </tr>
+            <tr v-for="item in list" :key="item.id">
+              <th>{{ item.date }}</th>
+              <td :class="{ active: item.num === ver }" v-for="ver in defaultList" :key="ver">
+                <span v-if="item.num === ver"> {{ ver }} </span>
+              </td>
+              <td :class="{ red: item.num > 4 }">{{ item.num > 4 ? '大' : '小' }}</td>
+              <td :class="{ red: item.num % 2 }">{{ item.num % 2 ? '单' : '双' }}</td>
+            </tr>
+          </table>
+        </div>
+      </van-tab>
+      <van-tab title="开奖记录">开奖记录</van-tab>
+      <van-tab title="投注记录">投注记录</van-tab>
+    </van-tabs>
   </div>
 </template>
 
@@ -44,12 +71,6 @@ import { ref } from 'vue';
 export default {
   name: 'BetView',
   setup() {
-    const value = ref('');
-    const tel = ref('');
-    const text = ref('');
-    const digit = ref('');
-    const number = ref('');
-    const password = ref('');
     const list = [];
     const defaultList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -61,7 +82,15 @@ export default {
       };
       list.push(item);
     }
-    return { value, tel, text, digit, number, password, list, defaultList };
+
+    let butState = ref(false);
+    const setButState = () => {
+      butState.value = !butState.value;
+    };
+
+    const active = ref(0);
+
+    return { list, defaultList, butState, setButState, active };
   },
 };
 </script>
@@ -70,22 +99,69 @@ export default {
 .bet {
   display: flex;
   flex-direction: column;
-  .table {
-    border-color: #ddd;
-    border-collapse: collapse;
-    margin: 0.2667rem 0.4rem;
-    margin-bottom: 0;
-    th {
-      background-color: #eee;
+
+  .bet_head {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    padding: 0.32rem;
+  }
+
+  .bet_form {
+    padding: 0.5333rem;
+    padding-bottom: 0.2667rem;
+    border-bottom: 1px solid #ddd;
+    .bet_input {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    td {
-      text-align: center;
+    .bet_but {
+      margin: 0.2133rem 1.0667rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
-    .active {
-      background: #bee;
+    .bet_but_group {
+      margin: 0.2133rem 1.0667rem;
+      .bet_but_num {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 0.2133rem;
+      }
     }
-    .red {
-      color: #f00;
+  }
+
+  .bet_tabs {
+    /deep/ .van-tabs__nav {
+      background-color: transparent;
+    }
+    /deep/ .van-tabs__line {
+      width: 2.6667rem;
+      height: 1px;
+    }
+    .bet_table_con {
+      width: 100%;
+      margin: 0.2667rem 0;
+      display: flex;
+      justify-content: center;
+      .bet_table {
+        width: 90%;
+        border-color: #ddd;
+        border-collapse: collapse;
+        th {
+          background-color: #eee;
+        }
+        td {
+          text-align: center;
+        }
+        .active {
+          background: #bee;
+        }
+        .red {
+          color: #f00;
+        }
+      }
     }
   }
 }

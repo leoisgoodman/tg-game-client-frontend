@@ -58,7 +58,6 @@ export default {
     }
     .router {
       box-sizing: border-box;
-      padding: 0.2667rem 0;
       height: calc(100% - 100px);
       overflow-y: auto;
     }
