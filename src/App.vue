@@ -1,6 +1,11 @@
 <template>
   <div class="main">
     <div class="content">
+      <div class="head">
+        <span>群: 旺彩娱乐-试玩</span>
+        <span>用户: root</span>
+        <span style="color: #ff0">群主 庄家 100% </span>
+      </div>
       <div class="router">
         <router-view />
       </div>
@@ -14,13 +19,8 @@
   </div>
 </template>
 <script>
-import { ref } from 'vue';
-
 export default {
-  setup() {
-    const active = ref(0);
-    return { active };
-  },
+  setup() {},
 };
 </script>
 
@@ -32,7 +32,8 @@ export default {
   overflow: hidden;
   display: flex;
   justify-content: center;
-  font-size: 12px;
+  background-color: #f2f5f5;
+  font-size: 0.32rem;
 
   .content {
     width: 100%;
@@ -45,8 +46,20 @@ export default {
       left: auto;
       // min-width: 750px;
     }
+    .head {
+      height: 50px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 100%;
+      background: #f00;
+      color: #fff;
+      box-shadow: 0 5px 5px rgb(170 170 170 / 60%);
+    }
     .router {
-      height: calc(100% - 50px);
+      box-sizing: border-box;
+      padding: 0.2667rem 0;
+      height: calc(100% - 100px);
       overflow-y: auto;
     }
   }

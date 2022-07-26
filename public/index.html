@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
@@ -25,7 +25,7 @@
           var clientWidth = docEl.clientWidth;
           if (!clientWidth) return;
           if (clientWidth >= 750) {
-            docEl.style.fontSize = '100px';
+            docEl.style.fontSize = '75px';
           } else {
             docEl.style.fontSize = 37.5 * (clientWidth / 375) + 'px'; //直接输入设计图大小即可
           }

@@ -74,6 +74,7 @@ export default {
     border-color: #ddd;
     border-collapse: collapse;
     margin: 0.2667rem 0.4rem;
+    margin-bottom: 0;
     th {
       background-color: #eee;
     }
@@ -84,7 +85,7 @@ export default {
       background: #bee;
     }
     .red {
-      color: red;
+      color: #f00;
     }
   }
 }
