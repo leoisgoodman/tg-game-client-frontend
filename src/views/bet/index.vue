@@ -45,8 +45,9 @@
     </div>
 
     <van-tabs v-model:active="active" class="bet_tabs">
-      <van-tab title="走势图">
-        <div class="bet_table_con">
+      <van-tab>
+        <template #title>走势图<van-icon name="replay" /></template>
+        <div class="bet_tabs_con">
           <table class="bet_table" border="1">
             <tr class="th">
               <th></th>
@@ -67,8 +68,28 @@
           </table>
         </div>
       </van-tab>
-      <van-tab title="开奖记录">开奖记录</van-tab>
-      <van-tab title="投注记录">投注记录</van-tab>
+      <van-tab title="开奖记录">
+        <div class="bet_tabs_con">
+          <div class="record_item" v-for="item in list" :key="item.id">
+            <div class="record_head">
+              <div class="record_left">
+                <div class="col4 ps4"><span class="tag">试玩</span> 1 , 小 , 单</div>
+                <div class="ps4">两面赔率: 1.95</div>
+                <div class="ps4">号码赔率: 9.75</div>
+              </div>
+              <div class="record_right">
+                <div class="ps4">盈: 40 余额：100659.235</div>
+                <div class="ps4">佣金：0.2</div>
+              </div>
+            </div>
+            <div class="ps4">庄家： 双:20 6:20</div>
+            <div class="ps4">BTCUSDT: 23447.1 2022-07-22 17:18</div>
+          </div>
+        </div>
+      </van-tab>
+      <van-tab>
+        <template #title>投注记录<van-icon name="replay" /></template>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -164,11 +185,12 @@ export default {
       width: 2.6667rem;
       height: 1px;
     }
-    .bet_table_con {
+    .bet_tabs_con {
       width: 100%;
       margin: 0.2667rem 0;
       display: flex;
       justify-content: center;
+      flex-direction: column;
       .bet_table {
         width: 90%;
         border-color: #ddd;
@@ -184,6 +206,25 @@ export default {
         }
         .red {
           color: #f00;
+        }
+      }
+    }
+    .record_item {
+      width: 90%;
+      border-bottom: 1px dashed #eee;
+      padding: 0.1333rem 0.2667rem;
+      color: #888;
+      .record_head {
+        display: flex;
+        justify-content: space-between;
+        .col4 {
+          color: #444;
+          font-size: 14px;
+        }
+        .record_right {
+          color: #444;
+          font-size: 14px;
+          text-align: right;
         }
       }
     }
