@@ -16,22 +16,30 @@
       </div>
       <div class="bet_but_group" v-show="butState">
         <div class="bet_but_num">
-          <van-button type="default">0</van-button>
-          <van-button type="default">1</van-button>
-          <van-button type="default">2</van-button>
-          <van-button type="default">3</van-button>
-          <van-button type="default">4</van-button>
+          <van-button
+            :color="activeList.includes(ver) ? '#1ae' : ' #adaaaa'"
+            size="small"
+            v-for="ver in minNum"
+            :key="ver"
+            @click="setActiveList(ver)"
+          >
+            {{ ver }}
+          </van-button>
         </div>
         <div class="bet_but_num">
-          <van-button type="default">5</van-button>
-          <van-button type="default">6</van-button>
-          <van-button type="default">7</van-button>
-          <van-button type="default">8</van-button>
-          <van-button type="default">9</van-button>
+          <van-button
+            :color="activeList.includes(ver) ? '#1ae' : ' #adaaaa'"
+            size="small"
+            v-for="ver in maxNum"
+            :key="ver"
+            @click="setActiveList(ver)"
+          >
+            {{ ver }}
+          </van-button>
         </div>
         <div class="bet_but_num">
-          <van-button color="#1ae">确定</van-button>
-          <van-button type="default" @click="setButState">取消</van-button>
+          <van-button color="#1ae" size="small">确定</van-button>
+          <van-button type="default" @click="setButState" size="small">取消</van-button>
         </div>
       </div>
     </div>
@@ -72,25 +80,41 @@ export default {
   name: 'BetView',
   setup() {
     const list = [];
-    const defaultList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const minNum = [0, 1, 2, 3, 4];
+    const maxNum = [5, 6, 7, 8, 9];
+    const defaultList = minNum.concat(maxNum);
 
     for (let i = 0; i <= 100; i++) {
       const item = {
         id: i,
         date: '12:20',
-        num: defaultList[i % 10],
+        num: Math.floor(Math.random() * 10),
       };
       list.push(item);
     }
 
     let butState = ref(false);
+    const activeList = ref([]);
+
     const setButState = () => {
+      activeList.value = [];
       butState.value = !butState.value;
     };
 
     const active = ref(0);
 
-    return { list, defaultList, butState, setButState, active };
+    const setActiveList = (num) => {
+      if (activeList.value.includes(num)) {
+        activeList.value.forEach((element, i) => {
+          if (element === num) {
+            activeList.value.splice(i, 1);
+          }
+        });
+      } else {
+        activeList.value.push(num);
+      }
+    };
+    return { minNum, maxNum, list, defaultList, butState, setButState, active, activeList, setActiveList };
   },
 };
 </script>
