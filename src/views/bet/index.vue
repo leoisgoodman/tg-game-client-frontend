@@ -48,43 +48,12 @@
       <van-tab>
         <template #title>走势图<van-icon name="replay" /></template>
         <div class="bet_tabs_con">
-          <table class="bet_table" border="1">
-            <tr class="th">
-              <th></th>
-              <th v-for="ver in defaultList" :key="ver">
-                {{ ver }}
-              </th>
-              <th>大小</th>
-              <th>单双</th>
-            </tr>
-            <tr v-for="item in list" :key="item.id">
-              <th>{{ item.date }}</th>
-              <td :class="{ active: item.num === ver }" v-for="ver in defaultList" :key="ver">
-                <span v-if="item.num === ver"> {{ ver }} </span>
-              </td>
-              <td :class="{ red: item.num > 4 }">{{ item.num > 4 ? '大' : '小' }}</td>
-              <td :class="{ red: item.num % 2 }">{{ item.num % 2 ? '单' : '双' }}</td>
-            </tr>
-          </table>
+          <TrendView />
         </div>
       </van-tab>
       <van-tab title="开奖记录">
         <div class="bet_tabs_con">
-          <div class="record_item" v-for="item in list" :key="item.id">
-            <div class="record_head">
-              <div class="record_left">
-                <div class="col4 ps4"><span class="tag">试玩</span> 1 , 小 , 单</div>
-                <div class="ps4">两面赔率: 1.95</div>
-                <div class="ps4">号码赔率: 9.75</div>
-              </div>
-              <div class="record_right">
-                <div class="ps4">盈: 40 余额：100659.235</div>
-                <div class="ps4">佣金：0.2</div>
-              </div>
-            </div>
-            <div class="ps4">庄家： 双:20 6:20</div>
-            <div class="ps4">BTCUSDT: 23447.1 2022-07-22 17:18</div>
-          </div>
+          <LotteryRecord />
         </div>
       </van-tab>
       <van-tab>
@@ -96,23 +65,15 @@
 
 <script>
 import { ref } from 'vue';
+import TrendView from './trend.vue';
+import LotteryRecord from './lotteryRecord.vue';
 
 export default {
   name: 'BetView',
+  components: { TrendView, LotteryRecord },
   setup() {
-    const list = [];
     const minNum = [0, 1, 2, 3, 4];
     const maxNum = [5, 6, 7, 8, 9];
-    const defaultList = minNum.concat(maxNum);
-
-    for (let i = 0; i <= 100; i++) {
-      const item = {
-        id: i,
-        date: '12:20',
-        num: Math.floor(Math.random() * 10),
-      };
-      list.push(item);
-    }
 
     let butState = ref(false);
     const activeList = ref([]);
@@ -135,7 +96,7 @@ export default {
         activeList.value.push(num);
       }
     };
-    return { minNum, maxNum, list, defaultList, butState, setButState, active, activeList, setActiveList };
+    return { minNum, maxNum, butState, setButState, active, activeList, setActiveList };
   },
 };
 </script>
@@ -189,44 +150,8 @@ export default {
       width: 100%;
       margin: 0.2667rem 0;
       display: flex;
-      justify-content: center;
+      align-items: center;
       flex-direction: column;
-      .bet_table {
-        width: 90%;
-        border-color: #ddd;
-        border-collapse: collapse;
-        th {
-          background-color: #eee;
-        }
-        td {
-          text-align: center;
-        }
-        .active {
-          background: #bee;
-        }
-        .red {
-          color: #f00;
-        }
-      }
-    }
-    .record_item {
-      width: 90%;
-      border-bottom: 1px dashed #eee;
-      padding: 0.1333rem 0.2667rem;
-      color: #888;
-      .record_head {
-        display: flex;
-        justify-content: space-between;
-        .col4 {
-          color: #444;
-          font-size: 14px;
-        }
-        .record_right {
-          color: #444;
-          font-size: 14px;
-          text-align: right;
-        }
-      }
     }
   }
 }
