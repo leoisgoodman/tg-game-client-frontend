@@ -2,7 +2,7 @@
   <div class="user_item" v-for="item in list" :key="item.id">
     <div class="user_left">
       <div class="ps4">root@time_never_again</div>
-      <div class="ps4">余额：100659.235 投注：0 盈利：-52.4禁投</div>
+      <div class="ps4">余额：100659.235 投注：0 盈利：-52.4</div>
     </div>
     <van-button :color="item.state ? '#adaaaa' : '#f00'" size="mini" @click="setListState(item.id)">
       {{ item.state ? '禁投' : '允投' }}
@@ -48,8 +48,6 @@ export default {
   align-items: center;
   .user_left {
     color: #444;
-  }
-  .user_right {
   }
 }
 </style>
