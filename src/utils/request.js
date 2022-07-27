@@ -20,7 +20,7 @@ const errorHandler = (error) => {
 };
 
 request.interceptors.request.use((config) => {
-  config.headers['timeZone'] = new Date().getTimezoneOffset();
+  config.headers['AUTHORIZATION'] = sessionStorage.getItem('token');
   config.headers['Content-Type'] = config.headers['Content-Type'] ? config.headers['Content-Type'] : 'application/json';
   return config;
 }, errorHandler);

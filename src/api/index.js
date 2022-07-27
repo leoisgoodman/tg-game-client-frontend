@@ -1,9 +1,8 @@
 import request from '@/utils/request';
 import api from './allUrl';
 
-export function getUser(parameter) {
+export function getLoad() {
   return request({
-    url: api.LogIn,
-    params: parameter,
+    url: api.load,
   });
 }

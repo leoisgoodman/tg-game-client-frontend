@@ -11,7 +11,7 @@
       </div>
       <van-tabbar route active-color="#ee0a24" inactive-color="#000">
         <van-tabbar-item to="/rule" icon="bars">规则</van-tabbar-item>
-        <van-tabbar-item to="/" icon="fire">投注</van-tabbar-item>
+        <van-tabbar-item to="/bet" icon="fire">投注</van-tabbar-item>
         <van-tabbar-item to="/main" icon="setting">庄家</van-tabbar-item>
         <van-tabbar-item to="/recharge" icon="gold-coin">充值提现</van-tabbar-item>
       </van-tabbar>
