@@ -4,6 +4,10 @@ import Bet from '@/views/bet';
 const routes = [
   {
     path: '/',
+    redirect: '/bet',
+  },
+  {
+    path: '/bet',
     name: 'bet',
     component: Bet,
   },

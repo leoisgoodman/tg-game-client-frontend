@@ -30,4 +30,17 @@ module.exports = defineConfig({
       })
       .end();
   },
+  devServer: {
+    port: 9100,
+    proxy: {
+      '/v1/': {
+        target: 'http://kotlin.cg45.xyz:8080',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/v1/': '',
+        },
+      },
+    },
+  },
 });

@@ -64,7 +64,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { getLoad } from '@/api';
 import TrendView from './trend.vue';
 import LotteryRecord from './lotteryRecord.vue';
 
@@ -96,6 +97,13 @@ export default {
         activeList.value.push(num);
       }
     };
+
+    onMounted(() => {
+      getLoad().then((res) => {
+        //获取当前用户信息
+        console.log(res);
+      });
+    });
     return { minNum, maxNum, butState, setButState, active, activeList, setActiveList };
   },
 };
