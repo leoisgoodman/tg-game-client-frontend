@@ -13,10 +13,10 @@
         <span>USDT</span>
       </div>
       <div class="bet_but" v-show="!butState">
-        <van-button color="#1ae" @click="confirm($event, '大')" size="small">大</van-button>
-        <van-button color="#1ae" @click="confirm($event, '小')" size="small">小</van-button>
-        <van-button color="#1ae" @click="confirm($event, '单')" size="small">单</van-button>
-        <van-button color="#1ae" @click="confirm($event, '双')" size="small">双</van-button>
+        <van-button color="#1ae" @click="confirm('大', 'big')" size="small">大</van-button>
+        <van-button color="#1ae" @click="confirm('小', 'small')" size="small">小</van-button>
+        <van-button color="#1ae" @click="confirm('单', 'odd')" size="small">单</van-button>
+        <van-button color="#1ae" @click="confirm('双', 'even')" size="small">双</van-button>
         <van-button color="#3369E8" @click="setButState" size="small">号码</van-button>
       </div>
       <div class="bet_but_group" v-show="butState">
@@ -80,6 +80,7 @@ import TrendView from './trend.vue';
 import LotteryRecord from './lotteryRecord.vue';
 import { getCurrentRecord } from '@/api';
 import { Dialog } from 'vant';
+import { addBetOrder } from '@/api/lottery';
 
 export default {
   name: 'BetView',
@@ -91,24 +92,32 @@ export default {
     let butState = ref(false);
     let currentRecord = ref({});
     const activeList = ref([]);
-    const inputUsdt = ref(0);
+    const inputUsdt = ref(1);
+    const params = ref({});
 
     const setButState = (obj) => {
       console.log(obj);
       butState.value = !butState.value;
     };
 
-    const confirm = (obj, value) => {
+    const confirm = (name, value) => {
       Dialog.confirm({
-        message: '投注' + value + inputUsdt.value + '?',
+        message: '投注  ' + name + '  ' + inputUsdt.value + '?',
       })
         .then(() => {
           // on confirm
-          console.log(obj);
-          console.log(this.$refs.inputUsdt.value);
+          console.log('sure');
+          params.value = {
+            amount: inputUsdt.value,
+            betCode: value,
+          };
+          addBetOrder(params).then((res) => {
+            console.log(res);
+          });
         })
         .catch(() => {
           // on cancel
+          console.log('cancel');
         });
     };
 
