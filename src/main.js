@@ -8,6 +8,7 @@ import { analysisDomainName } from './utils/helpers';
 
 import './style/basic.less';
 import 'vant/es/toast/style';
+import 'vant/es/dialog/style';
 
 const app = createApp(App);
 analysisDomainName();
