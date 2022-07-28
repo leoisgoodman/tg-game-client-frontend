@@ -1,17 +1,22 @@
 <template>
   <div class="bet">
-    <div class="bet_head">彩票已关停 <span class="tag ml20">试玩</span></div>
+    <div class="bet_head" v-if="currentRecord.status == 'Enable'">
+      本期{{ currentRecord.issue }}&nbsp;&nbsp;投注中 <span class="tag ml20">试玩</span>
+    </div>
+    <div class="bet_head" v-if="currentRecord.status == 'Lock'">
+      本期{{ currentRecord.issue }}&nbsp;&nbsp;停止投注,等待开奖<span class="tag ml20">试玩</span>
+    </div>
     <div class="bet_form">
       <div class="bet_input">
         <span> {{ butState ? '选中号码各投注：' : '投注金额：' }} </span>
-        <input type="text" />
+        <input type="text" v-model="inputUsdt" />
         <span>USDT</span>
       </div>
       <div class="bet_but" v-show="!butState">
-        <van-button color="#1ae" size="small">大</van-button>
-        <van-button color="#1ae" size="small">小</van-button>
-        <van-button color="#1ae" size="small">单</van-button>
-        <van-button color="#1ae" size="small">双</van-button>
+        <van-button color="#1ae" @click="confirm($event, '大')" size="small">大</van-button>
+        <van-button color="#1ae" @click="confirm($event, '小')" size="small">小</van-button>
+        <van-button color="#1ae" @click="confirm($event, '单')" size="small">单</van-button>
+        <van-button color="#1ae" @click="confirm($event, '双')" size="small">双</van-button>
         <van-button color="#3369E8" @click="setButState" size="small">号码</van-button>
       </div>
       <div class="bet_but_group" v-show="butState">
@@ -46,7 +51,10 @@
 
     <van-tabs v-model:active="active" class="bet_tabs">
       <van-tab>
-        <template #title>走势图<van-icon name="replay" /></template>
+        <template #title
+          >走势图
+          <van-icon name="replay" />
+        </template>
         <div class="bet_tabs_con">
           <TrendView />
         </div>
@@ -57,17 +65,21 @@
         </div>
       </van-tab>
       <van-tab>
-        <template #title>投注记录<van-icon name="replay" /></template>
+        <template #title
+          >投注记录
+          <van-icon name="replay" />
+        </template>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { getLoad } from '@/api';
+import { onDeactivated, onMounted, ref } from 'vue';
 import TrendView from './trend.vue';
 import LotteryRecord from './lotteryRecord.vue';
+import { getCurrentRecord } from '@/api';
+import { Dialog } from 'vant';
 
 export default {
   name: 'BetView',
@@ -77,11 +89,27 @@ export default {
     const maxNum = [5, 6, 7, 8, 9];
 
     let butState = ref(false);
+    let currentRecord = ref({});
     const activeList = ref([]);
+    const inputUsdt = ref(0);
 
-    const setButState = () => {
-      activeList.value = [];
+    const setButState = (obj) => {
+      console.log(obj);
       butState.value = !butState.value;
+    };
+
+    const confirm = (obj, value) => {
+      Dialog.confirm({
+        message: '投注' + value + inputUsdt.value + '?',
+      })
+        .then(() => {
+          // on confirm
+          console.log(obj);
+          console.log(this.$refs.inputUsdt.value);
+        })
+        .catch(() => {
+          // on cancel
+        });
     };
 
     const active = ref(0);
@@ -97,14 +125,35 @@ export default {
         activeList.value.push(num);
       }
     };
-
-    onMounted(() => {
-      getLoad().then((res) => {
-        //获取当前用户信息
-        console.log(res);
+    const timer = function () {
+      getCurrentRecord().then((res) => {
+        currentRecord.value = res;
+        if (currentRecord.value.status == 'Enable') {
+          butState.value = true;
+        }
       });
+    };
+    onMounted(() => {
+      //组件挂载时的生命周期执行的方法
+      window.setInterval(timer, 3000);
     });
-    return { minNum, maxNum, butState, setButState, active, activeList, setActiveList };
+    onDeactivated(() => {
+      //离开当前组件的生命周期执行的方法
+      window.clearInterval(timer);
+    });
+
+    return {
+      minNum,
+      maxNum,
+      butState,
+      setButState,
+      inputUsdt,
+      confirm,
+      active,
+      activeList,
+      setActiveList,
+      currentRecord,
+    };
   },
 };
 </script>
@@ -124,19 +173,23 @@ export default {
     padding: 0.5333rem;
     padding-bottom: 0.2667rem;
     border-bottom: 1px solid #ddd;
+
     .bet_input {
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
     .bet_but {
       margin: 0.2133rem 1.0667rem;
       display: flex;
       justify-content: space-around;
       align-items: center;
     }
+
     .bet_but_group {
       margin: 0.2133rem 1.0667rem;
+
       .bet_but_num {
         display: flex;
         justify-content: space-around;
@@ -150,10 +203,12 @@ export default {
     /deep/ .van-tabs__nav {
       background-color: transparent;
     }
+
     /deep/ .van-tabs__line {
       width: 2.6667rem;
       height: 1px;
     }
+
     .bet_tabs_con {
       width: 100%;
       margin: 0.2667rem 0;

@@ -2,9 +2,10 @@
   <div class="main">
     <div class="content">
       <div class="head">
-        <span>群: 旺彩娱乐-试玩</span>
-        <span>用户: root</span>
-        <span style="color: #ff0">群主 庄家 100% </span>
+        <span>群: {{ userInfo.groupName }}</span>
+        <span>用户: {{ userInfo.username }}</span>
+        <span v-if="userInfo.is_owner === 'Y'" style="color: #ff0">群主</span>
+        <span v-if="userInfo.type === 'Banker'" style="color: #ff0">庄家 {{ userInfo.percent }}%</span>
       </div>
       <div class="router">
         <router-view />
@@ -19,8 +20,18 @@
   </div>
 </template>
 <script>
+import { getLoad } from '@/api';
+import { ref } from 'vue';
+
 export default {
-  setup() {},
+  setup() {
+    let userInfo = ref({});
+    getLoad().then((res) => {
+      console.log(res);
+      userInfo.value = res;
+    });
+    return { userInfo };
+  },
 };
 </script>
 
