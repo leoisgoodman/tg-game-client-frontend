@@ -43,7 +43,7 @@
           </van-button>
         </div>
         <div class="bet_but_num">
-          <van-button color="#1ae" size="small">确定</van-button>
+          <van-button color="#1ae" @click="confirm" size="small">确定</van-button>
           <van-button type="default" @click="setButState" size="small">取消</van-button>
         </div>
       </div>
@@ -93,7 +93,6 @@ export default {
     let currentRecord = ref({});
     const activeList = ref([]);
     const inputUsdt = ref(1);
-    const params = ref({});
 
     const setButState = (obj) => {
       console.log(obj);
@@ -101,19 +100,24 @@ export default {
     };
 
     const confirm = (name, value) => {
+      console.log(activeList.value);
       Dialog.confirm({
         message: '投注  ' + name + '  ' + inputUsdt.value + '?',
       })
         .then(() => {
           // on confirm
           console.log('sure');
-          params.value = {
+          const params = {
             amount: inputUsdt.value,
             betCode: value,
           };
-          addBetOrder(params).then((res) => {
-            console.log(res);
-          });
+          addBetOrder(params)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((res) => {
+              console.log(res);
+            });
         })
         .catch(() => {
           // on cancel
@@ -137,9 +141,6 @@ export default {
     const timer = function () {
       getCurrentRecord().then((res) => {
         currentRecord.value = res;
-        if (currentRecord.value.status == 'Enable') {
-          butState.value = true;
-        }
       });
     };
     onMounted(() => {
