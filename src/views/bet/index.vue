@@ -43,7 +43,7 @@
           </van-button>
         </div>
         <div class="bet_but_num">
-          <van-button color="#1ae" @click="confirm" size="small">确定</van-button>
+          <van-button color="#1ae" @click="confirm()" size="small">确定</van-button>
           <van-button type="default" @click="setButState" size="small">取消</van-button>
         </div>
       </div>
@@ -100,17 +100,20 @@ export default {
     };
 
     const confirm = (name, value) => {
-      console.log(activeList.value);
+      console.log(name);
       Dialog.confirm({
-        message: '投注  ' + name + '  ' + inputUsdt.value + '?',
+        message: name
+          ? '投注  ' + name + '  ' + inputUsdt.value + '?'
+          : `投注 ${activeList.value.join(' ')} 各 ${inputUsdt.value}`,
       })
         .then(() => {
-          // on confirm
-          console.log('sure');
           const params = {
             amount: inputUsdt.value,
-            betCode: value,
+            betCode: value ? value : 'num',
           };
+          if (!name) {
+            params.numList = activeList.value;
+          }
           addBetOrder(params)
             .then((res) => {
               console.log(res);
