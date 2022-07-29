@@ -19,5 +19,9 @@ export function getBetOrderList(parameter) {
  * @returns {*}
  */
 export function addBetOrder(parameter) {
-  return request.post(api.addBetOrder, parameter);
+  return request({
+    method: 'post',
+    url: api.addBetOrder,
+    data: parameter,
+  });
 }

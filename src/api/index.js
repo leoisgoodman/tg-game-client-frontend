@@ -7,7 +7,10 @@ import api from './allUrl';
  */
 export function getLoad() {
   return request({
+    // method: 'post',  // 默认 get
     url: api.load,
+    // params: params,  // params就是query参数
+    // data: params // data就是body参数
   });
 }
 
